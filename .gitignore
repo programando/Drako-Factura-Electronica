@@ -1,0 +1,9 @@
+application/Database_config.php
+application/Config.php
+public/images/
+logs/error.txt
+resources
+.idea
+*.txt
+.well-known
+*.xml

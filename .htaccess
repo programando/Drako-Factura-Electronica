@@ -1,0 +1,33 @@
+RewriteEngine on
+
+
+		RewriteCond %{REQUEST_FILENAME} !-d
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteCond %{REQUEST_FILENAME} !-l
+		RewriteRule  ^(.*)$ index.php?url=$1 [QSA,L]
+
+
+		Options -Indexes
+
+
+ <IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+
+
+ <FilesMatch "\.(ttf|otf|eot|woff)$">
+     <IfModule mod_headers.c>
+       Header set Access-Control-Allow-Origin "*"
+     </IfModule>
+ </FilesMatch>
+
+<Files *>
+	Header set Cache-Control: "no-cache, private, pre-check=0, post-check=0, max-age=0"
+	Header set Expires: 0
+	Header set Pragma: no-cache
+</Files>
+
+
+
+
