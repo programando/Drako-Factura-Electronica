@@ -6,7 +6,7 @@ class FacturaElectronicaController extends Controller
    var $xml, $TipoDocumento, $CadenaBase64, $idTransactionXml;
    var $statusCode, $statusError, $statusSuccess ;
    var $uploadCode, $uploadError, $uploadSuccess ;
-   var $nombreDocumento ;
+   var $nombreDocumento, $nomDocCreado ;
 
     public function __construct() {
         parent::__construct();
@@ -20,9 +20,6 @@ class FacturaElectronicaController extends Controller
             $this->facturasPendientes  () ;
         }
 
-        public function IndexPrueba() {
-            echo "He ingresado al sistema. Desde drako.plusoft.co";
-        }
 
         private function facturasPendientes ()    {
           $this->id_fact_elctrnca = 0 ;
@@ -33,23 +30,22 @@ class FacturaElectronicaController extends Controller
                //Llamada de todos los datos de la factura almacencados en los diferentes archivos
                $this->consultaDatosFactura( $Factura['id_fact_elctrnca'] );
                //Generación de los datos de la factura en cada uno de los archivos
-               $this->xmlInicioArchivo( $this->TipoDocumento );
+               $this->xmlInicioArchivo( $this->TipoDocumento, $Factura['_06_nro_fctra'] );
                   $this->ENC () ;
                   $this->EMI () ;
                   $this->ADQ () ;
                   $this->TOT () ;
                   $this->TIM () ;
                   $this->DRF () ;
-                  $this->NOT () ; // Contiene OCR
+                  $this->NOT () ;
                   $this->REF () ;
                   $this->MEP () ;
-                  $this->CDN () ; // Sólo para notas
+                  $this->CDN () ;
                   $this->ITE () ;
               $this->xmlFinalArchivo();
               $this->id_fact_elctrnca =  $Factura['id_fact_elctrnca'] ;
 
               if ( $this->id_fact_elctrnca  > 0 )  {
-
                 $this->uploadFile          ();
                 $this->updateUploadFile    () ;
               }
@@ -79,7 +75,7 @@ class FacturaElectronicaController extends Controller
           if ( !empty($this->NOT )) {
             $this->NOT = $this->NOT[0];
           }
-          if ( !empty($this->REF  ))  {    // Contiene OCR
+          if ( !empty($this->REF  ))  {
               $this->REF = $this->REF[0];
           }
           $this->TipoDocumento = $this->EMI['_01_tp_doc'] ;
@@ -110,11 +106,7 @@ class FacturaElectronicaController extends Controller
             if (  $this->TipoDocumento === 'ND') {
               $this->CrearSiExite('ENC_21', '32'            );
             }
-
           $this->xml->endElement();
-
-
-
       }
 
       private function EMI () {
@@ -171,13 +163,13 @@ class FacturaElectronicaController extends Controller
         $this->xml->endElement();
       }
 
-      // Pendiente implementar en ERP // Contacto del emisor
+
       private function CDE () {
         $this->xml->startElement('CDE');
           $this->CrearSiExite('CDE_1',    '1'                               );
-          $this->CrearSiExite('CDE_2',    'JHON JAMES MONTAÑO'              );
-          $this->CrearSiExite('CDE_3',    '3113369005'                      );
-          $this->CrearSiExite('CDE_4',    'jhonjamesmg@hotmail.com'         );
+          $this->CrearSiExite('CDE_2',    'CONTACTO EMISOR'              );
+          $this->CrearSiExite('CDE_3',    '4881616'                      );
+          $this->CrearSiExite('CDE_4',    'contabilidadt@balquimia.com'         );
         $this->xml->endElement();
       }
 
@@ -458,27 +450,27 @@ class FacturaElectronicaController extends Controller
         }
 
 
-        private function xmlInicioArchivo(  $TipoDocumento  ) {
+        private function xmlInicioArchivo(  $TipoDocumento,  $NomDocumentoCreado ) {
           $this->xml = new XMLWriter();
           $this->xml->openMemory();
           $this->xml->setIndent(true);
           $this->xml->setIndentString("\t");
-          $this->tipoDocumentoCreado ( $TipoDocumento  );
+          $this->tipoDocumentoCreado ( $TipoDocumento, $NomDocumentoCreado  );
         }
 
-        private function tipoDocumentoCreado ( $TipoDocumento ) {
+        private function tipoDocumentoCreado ( $TipoDocumento, $NomDocumentoCreado ) {
 
           if ( $TipoDocumento === 'INVOIC')  {
                 $this->xml->startElement('FACTURA');
-                $this->nombreDocumento = FACTURAS_ELECTRONICAS . 'FA.xml';
+                $this->nombreDocumento = FACTURAS_ELECTRONICAS . $NomDocumentoCreado.'.xml';
             }
             if ( $TipoDocumento === 'NC')     {
                 $this->xml->startElement('NOTA');
-                $this->nombreDocumento  = FACTURAS_ELECTRONICAS.'NC.xml';
+                $this->nombreDocumento  = FACTURAS_ELECTRONICAS.  $NomDocumentoCreado.'.xml';
             }
             if ( $TipoDocumento === 'ND')      {
               $this->xml->startElement('NOTA');
-              $this->nombreDocumento =  FACTURAS_ELECTRONICAS . 'ND.xml';
+              $this->nombreDocumento =  FACTURAS_ELECTRONICAS . $NomDocumentoCreado.'.xml';
             }
             $this->xml->writeAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
             $this->xml->writeAttribute('xmlns:xsd', 'http://www.w3.org/2001/XMLSchema');
@@ -505,18 +497,23 @@ class FacturaElectronicaController extends Controller
             "password"  => FACT_ELEC_PASS,
             "xmlBase64" => $xmlBase64
            );
-         $response = $cliente->__soapCall("FtechAction.uploadInvoiceFile", $params);
+
+           $response = $cliente->__soapCall("FtechAction.uploadInvoiceFile", $params);
 
          $this->uploadCode       = $response->code;
          $this->uploadError      = $response->error;
          $this->uploadSuccess      = $response->success;
          $this->idTransactionXml = $response->transaccionID ;
+
          Debug::Mostrar( $response ) ;
+
+
         }
 
         public function statusFile ( ) {
           $cliente          = new SoapClient( FACT_ELEC_URL);
           $Documentos       = $this->Factura->checkDocumentsStatus();
+
           foreach( $Documentos as $Doc ) {
               $idTransactionXml       = $Doc['transactionId'] ;
               $params                 = array( "username"      => FACT_ELEC_USU,  "password"      => FACT_ELEC_PASS,  "transaccionID" => $idTransactionXml  );
@@ -547,7 +544,6 @@ class FacturaElectronicaController extends Controller
            $pdf      = base64_decode( $xml );
            $file     = 'invoice.xml';
            file_put_contents($file, $pdf);
-
         }
 
         private function updateUploadFile () {
