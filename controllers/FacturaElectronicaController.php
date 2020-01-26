@@ -19,6 +19,9 @@ class FacturaElectronicaController extends Controller
 
     public function index(){}
 
+     public function prueba() {
+       Debug::Mostrar ("GenerarXML desde prueba controlador....");
+     }
 
         public function GenerarXML () {
             $this->facturasPendientes  () ;
