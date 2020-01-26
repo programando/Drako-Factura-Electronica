@@ -33,7 +33,8 @@ class FacturaElectronicaController extends Controller
         private function facturasPendientes ()    {
           $this->id_fact_elctrnca = 0 ;
           $FacturasPendientes     = $this->Factura->fact_01_enc();
-
+          Debug::Mostrar ($FacturasPendientes   );
+          Debug::Mostrar ("GenerarXML desde prueba controlador....");
           foreach ( $FacturasPendientes as $Factura ) {
                $this->ENC    = $Factura;
                //Llamada de todos los datos de la factura almacencados en los diferentes archivos
