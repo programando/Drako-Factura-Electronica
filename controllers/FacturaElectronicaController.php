@@ -17,9 +17,8 @@ class FacturaElectronicaController extends Controller
     }
 
 
-    public function index(){
-      Debug::Mostrar(' drako.plusoft.co/FacturaElectronica/GenerarXML');
-    }
+    public function index(){}
+
 
         public function GenerarXML () {
             $this->facturasPendientes  () ;
