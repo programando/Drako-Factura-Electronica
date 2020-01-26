@@ -40,10 +40,10 @@ class Bootstrap
             }
 
         } else {
-            //Debug::Mostrar(BASE_URL );
-            //Debug::Mostrar( $RutaControlador  );
+            Debug::Mostrar(BASE_URL );
+            Debug::Mostrar( $RutaControlador  );
             //throw new Exception(header('Location: ' . $RutaControlador  ));
-            throw new Exception(header('Location: ' . BASE_URL .'views/error/404.php'));
+            //throw new Exception(header('Location: ' . BASE_URL .'views/error/404.php'));
 
         }
     }
