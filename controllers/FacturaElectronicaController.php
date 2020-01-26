@@ -121,7 +121,7 @@ class FacturaElectronicaController extends Controller
           $this->CrearSiExite('EMI_10',   $this->EMI['_10_drccion']           );
           $this->CrearSiExite('EMI_11',   $this->EMI['_11_dpto']              );
           $this->CrearSiExite('EMI_13',   $this->EMI['_13_mcipio']            );
-          $this->CrearSiExite('EMI_14',   '760001'                            );    // Código postal
+          $this->CrearSiExite('EMI_14',   '191030'                            );    // Código postal
           $this->CrearSiExite('EMI_15',   $this->EMI['_15_pais']              );
           $this->CrearSiExite('EMI_19',   $this->EMI['_19_dpto']              );
           $this->CrearSiExite('EMI_21',   $this->EMI['_21_pais']              );
@@ -168,8 +168,8 @@ class FacturaElectronicaController extends Controller
         $this->xml->startElement('CDE');
           $this->CrearSiExite('CDE_1',    '1'                               );
           $this->CrearSiExite('CDE_2',    'CONTACTO EMISOR'              );
-          $this->CrearSiExite('CDE_3',    '4881616'                      );
-          $this->CrearSiExite('CDE_4',    'contabilidadt@balquimia.com'         );
+          $this->CrearSiExite('CDE_3',    '3113369005'                      );
+          $this->CrearSiExite('CDE_4',    'jhonjamesmg@hotmail.com'         );
         $this->xml->endElement();
       }
 
@@ -267,9 +267,9 @@ class FacturaElectronicaController extends Controller
         }
         $this->xml->startElement('CDA');
           $this->CrearSiExite('CDA_1',  '5'          );
-          $this->CrearSiExite('CDA_2',   'CORREO BALQUIMIA'                         );
-          $this->CrearSiExite('CDA_3',   '4881616'                                  );
-          $this->CrearSiExite('CDA_4',  'facturaelectronica@balquimia.com'          );
+          $this->CrearSiExite('CDA_2',   'CORREO DRAKO'                         );
+          $this->CrearSiExite('CDA_3',   '3117470955'                                  );
+          $this->CrearSiExite('CDA_4',  'frenostoro1@hotmail.com'          );
         $this->xml->endElement();
       }
 
