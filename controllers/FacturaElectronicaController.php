@@ -1,6 +1,3 @@
-
-
-
 <?php
 
 class FacturaElectronicaController extends Controller
@@ -18,10 +15,6 @@ class FacturaElectronicaController extends Controller
 
 
     public function index(){}
-
-     public function prueba() {
-        echo phpinfo();
-     }
 
         public function GenerarXML () {
             $this->facturasPendientes  () ;
@@ -134,7 +127,7 @@ class FacturaElectronicaController extends Controller
           $this->CrearSiExite('EMI_21',   $this->EMI['_21_pais']              );
           $this->CrearSiExite('EMI_22',   $this->EMI['_22_dv_emprsa']         );
           $this->CrearSiExite('EMI_23',   $this->EMI['_23_cod_mcipio']        );
-          $this->CrearSiExite('EMI_24',   $this->EMI['_06_emprsa']            ); //_07_nom_ccial
+          $this->CrearSiExite('EMI_24',    $this->EMI['_07_nom_ccial']         ); //_07_nom_ccial
           $this->TAC () ;
           $this->DFE () ;
           $this->ICC ();
@@ -175,8 +168,8 @@ class FacturaElectronicaController extends Controller
         $this->xml->startElement('CDE');
           $this->CrearSiExite('CDE_1',    '1'                               );
           $this->CrearSiExite('CDE_2',    'CONTACTO EMISOR'              );
-          $this->CrearSiExite('CDE_3',    '3113369005'                      );
-          $this->CrearSiExite('CDE_4',    'jhonjamesmg@hotmail.com'         );
+          $this->CrearSiExite('CDE_3',    '3117470955'                      );
+          $this->CrearSiExite('CDE_4',    'frenostoro1@hotmail.com'         );
         $this->xml->endElement();
       }
 
@@ -272,12 +265,6 @@ class FacturaElectronicaController extends Controller
           $this->CrearSiExite('CDA_4',   $this->ADQ['cda_04_email_2']             );
           $this->xml->endElement();
         }
-        $this->xml->startElement('CDA');
-          $this->CrearSiExite('CDA_1',  '5'          );
-          $this->CrearSiExite('CDA_2',   'CORREO DRAKO'                         );
-          $this->CrearSiExite('CDA_3',   '3117470955'                                  );
-          $this->CrearSiExite('CDA_4',  'frenostoro1@hotmail.com'          );
-        $this->xml->endElement();
       }
 
 
@@ -508,8 +495,8 @@ class FacturaElectronicaController extends Controller
            $response = $cliente->__soapCall("FtechAction.uploadInvoiceFile", $params);
 
          $this->uploadCode       = $response->code;
-         $this->uploadError      = $response->error;
-         $this->uploadSuccess      = $response->success;
+         $this->uploadError      = $this->textoError ( $response->error, 0 );
+         $this->uploadSuccess    = utf8_decode( $response->success);
          $this->idTransactionXml = $response->transaccionID ;
 
          Debug::Mostrar( $response ) ;
@@ -527,7 +514,7 @@ class FacturaElectronicaController extends Controller
               $response               = $cliente->__soapCall("FtechAction.documentStatusFile", $params);
               $this->idTransactionXml = $idTransactionXml ;
               $this->statusCode       = $response->code;
-              $this->statusError      = $this->textoError ( $response->error );
+              $this->statusError      = $this->textoError ( $response->error, 200 );
               $this->statusSuccess    = $response->success;
               $this->updateDocumentStatus () ;
           }
@@ -557,13 +544,14 @@ class FacturaElectronicaController extends Controller
           $this->Factura->updateUploadFile ( $this->id_fact_elctrnca, $this->idTransactionXml, $this->uploadCode, $this->uploadError, $this->uploadSuccess ) ;
         }
 
-        private function textoError ( $error ) {
+        private function textoError ( $error, $extraerDesde ) {
           if ( strlen(trim( $error)) <=31 ) {
               return $error;
           }
           $error      = str_replace("'","", $error );
           $error      = $string = preg_replace("/[\r\n|\n|\r]+/", " ", $error );
-          $error      = substr ( $error ,200,250 );
+          $error      = substr ( $error , $extraerDesde , 250 );
+          $error      = utf8_encode ( $error ) ;
           return $error ;
         }
      // ====================== Final Documento ====================================

@@ -34,6 +34,7 @@
            $Facturas  = $this->Db->Ejecutar_Sp("fact_01_enc_upload_update ( $_id_fact_elctrnca, '$idTransaction',  '$uploadCode', '$uploadError', '$uploadSuccess')");
         }
 
+
         public function updateDocumentStatus (  $idTransaction, $statusCode, $statusSuccess, $statusError )   {
            $Facturas  = $this->Db->Ejecutar_Sp("fact_01_enc_status_update ( '$idTransaction',  '$statusCode', '$statusSuccess', '$statusError')");
         }
