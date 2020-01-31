@@ -494,6 +494,7 @@ class FacturaElectronicaController extends Controller
 
            $response = $cliente->__soapCall("FtechAction.uploadInvoiceFile", $params);
 
+           Debug::Mostrar( $response ) ;
          $this->uploadCode       = $response->code;
          $this->uploadError      = $this->textoError ( $response->error, 0 );
          $this->uploadSuccess    = utf8_decode( $response->success);
