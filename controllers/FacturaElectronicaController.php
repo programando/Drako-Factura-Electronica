@@ -35,8 +35,8 @@ class FacturaElectronicaController extends Controller
                   $this->EMI () ;
                   $this->ADQ () ;
                   $this->TOT () ;
-				          $this->DSC () ;
                   $this->TIM () ;
+                  $this->DSC () ;
                   $this->DRF () ;
                   $this->NOT () ;
                   $this->REF () ;
