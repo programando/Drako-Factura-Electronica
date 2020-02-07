@@ -517,10 +517,10 @@ class FacturaElectronicaController extends Controller
 
          $this->uploadCode       = $response->code;
          $this->uploadError      = $this->textoError ( $response->error, 0 );
-         $this->uploadSuccess    = utf8_decode( $response->success);
+         $this->uploadSuccess    = $this->textoError( $response->success, 0);
          $this->idTransactionXml = $response->transaccionID ;
          Debug::Mostrar( $response ) ;
-
+         Debug::Mostrar( $this->nombreDocumento ) ;
         }
 
         public function statusFile ( ) {
