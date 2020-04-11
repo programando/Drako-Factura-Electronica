@@ -15,7 +15,7 @@ class FacturaElectronicaController extends Controller
 
  
     public function index(){
-      return "Conectado a Drako.Plusoft.co" ;
+      Debug::Mostrar( "Conectado a Drako.Plusoft.co") ;
     }
 
         public function GenerarXML () {
