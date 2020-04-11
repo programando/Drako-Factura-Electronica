@@ -14,7 +14,7 @@ class FacturaElectronicaController extends Controller
     }
 
     public function  prueba() {
-      echo "He ingresado a Drako";
+      phpinfo();
     }
 
 
