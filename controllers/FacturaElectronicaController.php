@@ -15,7 +15,7 @@ class FacturaElectronicaController extends Controller
 
  
     public function index(){
-      echo "Conectado a Drako.Plusoft.co" 
+      return "Conectado a Drako.Plusoft.co" ;
     }
 
         public function GenerarXML () {
