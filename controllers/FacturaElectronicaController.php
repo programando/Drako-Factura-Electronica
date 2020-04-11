@@ -13,6 +13,10 @@ class FacturaElectronicaController extends Controller
         $this->Factura = $this->Load_Model('FacturaElectronica');
     }
 
+    public function  prueba() {
+      echo "He ingresado a Drako";
+    }
+
 
     public function index(){}
 
