@@ -14,7 +14,7 @@ class FacturaElectronicaController extends Controller
     }
 
     public function  prueba() {
-      phpinfo();
+      echo "Conectado a Drako.Plusoft.co" ;
     }
 
 
