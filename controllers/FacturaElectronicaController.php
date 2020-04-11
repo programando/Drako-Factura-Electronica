@@ -13,12 +13,10 @@ class FacturaElectronicaController extends Controller
         $this->Factura = $this->Load_Model('FacturaElectronica');
     }
 
-    public function  prueba() {
-      echo "Conectado a Drako.Plusoft.co" ;
+ 
+    public function index(){
+      echo "Conectado a Drako.Plusoft.co" 
     }
-
-
-    public function index(){}
 
         public function GenerarXML () {
             $this->facturasPendientes  () ;
