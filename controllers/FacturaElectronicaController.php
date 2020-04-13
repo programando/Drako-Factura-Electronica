@@ -521,16 +521,11 @@ class FacturaElectronicaController extends Controller
          $this->uploadError      = $this->textoError ( $response->error, 0 );
          $this->uploadSuccess    = $this->textoError( $response->success, 0);
          $this->idTransactionXml = $response->transaccionID ;
-         Debug::Mostrar( $response ) ;
-         Debug::Mostrar( $this->nombreDocumento ) ;
         }
 
-        public function statusFile ( ) {
-          Debug::Mostrar("lsdjaslkdjsalk");
+        public function statusFile ( ) {      
           $cliente          = new SoapClient( FACT_ELEC_URL);
           $Documentos       = $this->Factura->checkDocumentsStatus();
-          Debug::Mostrar ( $Documentos );
-
           foreach( $Documentos as $Doc ) {
               $idTransactionXml       = $Doc['transactionId'] ;
               $params                 = array( "username"      => FACT_ELEC_USU,  "password"      => FACT_ELEC_PASS,  "transaccionID" => $idTransactionXml  );
