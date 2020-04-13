@@ -526,6 +526,7 @@ class FacturaElectronicaController extends Controller
         public function statusFile ( ) {      
           $cliente          = new SoapClient( FACT_ELEC_URL);
           $Documentos       = $this->Factura->checkDocumentsStatus();
+          Debug::Mostrar($Documentos );
           foreach( $Documentos as $Doc ) {
               $idTransactionXml       = $Doc['transactionId'] ;
               $params                 = array( "username"      => FACT_ELEC_USU,  "password"      => FACT_ELEC_PASS,  "transaccionID" => $idTransactionXml  );
