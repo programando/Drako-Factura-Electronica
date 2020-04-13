@@ -526,6 +526,7 @@ class FacturaElectronicaController extends Controller
         }
 
         public function statusFile ( ) {
+          Debug::Mostrar("lsdjaslkdjsalk");
           $cliente          = new SoapClient( FACT_ELEC_URL);
           $Documentos       = $this->Factura->checkDocumentsStatus();
           Debug::Mostrar ( $Documentos );
