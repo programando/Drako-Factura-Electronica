@@ -57,11 +57,10 @@ class FacturaElectronicaController extends Controller
         $this->ITE () ;
         $this->xmlFinalArchivo();
         $this->id_fact_elctrnca =  $Factura['id_fact_elctrnca'] ;
-        Debug::Mostrar (  $this->id_fact_elctrnca/2 );
-/*         if ( $this->id_fact_elctrnca  > 0 )  {
+         if ( $this->id_fact_elctrnca  > 0 )  {
           $this->uploadFile          ();
           $this->updateUploadFile    () ;
-        }   */
+        }  
       } // Fin for each  
   }
   
@@ -526,7 +525,7 @@ class FacturaElectronicaController extends Controller
     );
     
     $response = $cliente->__soapCall("FtechAction.uploadInvoiceFile", $params);
-    
+    Debug::Mostrar ( $response );
     $this->uploadCode       = $response->code;
     $this->uploadError      = $this->textoError ( $response->error, 0 );
     $this->uploadSuccess    = $this->textoError( $response->success, 0);
