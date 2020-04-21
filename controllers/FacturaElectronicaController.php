@@ -58,10 +58,10 @@ class FacturaElectronicaController extends Controller
         $this->xmlFinalArchivo();
         $this->id_fact_elctrnca =  $Factura['id_fact_elctrnca'] ;
         Debug::Mostrar (  $this->id_fact_elctrnca/2 );
-        if ( $this->id_fact_elctrnca  > 0 )  {
+/*         if ( $this->id_fact_elctrnca  > 0 )  {
           $this->uploadFile          ();
           $this->updateUploadFile    () ;
-        } */
+        }   */
       } // Fin for each  
   }
   
