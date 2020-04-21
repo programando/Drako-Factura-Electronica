@@ -27,7 +27,7 @@ class FacturaElectronicaController extends Controller
     public function index()
     {
       $this->facturasPendientes ();
-      Debug::Mostrar ("desde el nuevo index - facturasPendientes");
+      
     }
         public function GenerarXML () {
             $this->facturasPendientes  () ;
@@ -36,9 +36,10 @@ class FacturaElectronicaController extends Controller
 
         private function facturasPendientes ()    {
           $this->id_fact_elctrnca = 0 ;
+          Debug::Mostrar ("desde el nuevo index - facturasPendientes");
           $FacturasPendientes     = $this->Factura->fact_01_enc();
-
-          foreach ( $FacturasPendientes as $Factura ) {
+          Debug::Mostrar ("desde el nuevo index - facturasPendientes II");
+          /* foreach ( $FacturasPendientes as $Factura ) {
                $this->ENC    = $Factura;
                //Llamada de todos los datos de la factura almacencados en los diferentes archivos
                $this->consultaDatosFactura( $Factura['id_fact_elctrnca'] );
@@ -63,7 +64,7 @@ class FacturaElectronicaController extends Controller
                 $this->uploadFile          ();
                 $this->updateUploadFile    () ;
               }
-            } // Fin for each
+            } // Fin for each */
         }
 
 
