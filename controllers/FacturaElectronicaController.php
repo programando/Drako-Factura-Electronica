@@ -43,8 +43,7 @@ class FacturaElectronicaController extends Controller
         $this->consultaDatosFactura( $Factura['id_fact_elctrnca'] );
         //Generación de los datos de la factura en cada uno de los archivos
         $this->xmlInicioArchivo( $this->TipoDocumento, $Factura['_06_nro_fctra'] );
-        Debug::Mostrar (  $Factura['id_fact_elctrnca'] );
-/*         $this->ENC () ;
+        $this->ENC () ;
         $this->EMI () ;
         $this->ADQ () ;
         $this->TOT () ;
@@ -58,7 +57,7 @@ class FacturaElectronicaController extends Controller
         $this->ITE () ;
         $this->xmlFinalArchivo();
         $this->id_fact_elctrnca =  $Factura['id_fact_elctrnca'] ;
-        
+        Debug::Mostrar (  $this->id_fact_elctrnca/2 );
         if ( $this->id_fact_elctrnca  > 0 )  {
           $this->uploadFile          ();
           $this->updateUploadFile    () ;
