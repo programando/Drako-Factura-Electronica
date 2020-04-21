@@ -26,7 +26,8 @@ class FacturaElectronicaController extends Controller
 
     public function index()
     {
-      Debug::Mostrar ("desde el nuevo index");
+      $this->facturasPendientes ();
+      Debug::Mostrar ("desde el nuevo index - facturasPendientes");
     }
         public function GenerarXML () {
             $this->facturasPendientes  () ;
