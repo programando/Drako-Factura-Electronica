@@ -15,8 +15,13 @@ class FacturaElectronicaController extends Controller
 
  
     public function index(){
-      $this->GenerarXML();
-      $this->statusFile();
+      try {
+        $this->GenerarXML();
+        $this->statusFile();
+      }
+      catch (Exception $e) {
+        echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+      }
     }
 
         public function GenerarXML () {
