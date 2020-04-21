@@ -14,7 +14,7 @@ class FacturaElectronicaController extends Controller
     }
 
  
-    public function index(){
+/*     public function index(){
       try {
         $this->GenerarXML();
         $this->statusFile();
@@ -22,8 +22,12 @@ class FacturaElectronicaController extends Controller
       catch (Exception $e) {
         echo 'Excepción capturada: ',  $e->getMessage(), "\n";
       }
-    }
+    } */
 
+    public function index()
+    {
+      Debug::Mostrar ("desde el nuevo index");
+    }
         public function GenerarXML () {
             $this->facturasPendientes  () ;
         }
