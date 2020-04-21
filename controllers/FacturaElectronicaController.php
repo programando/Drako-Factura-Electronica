@@ -14,54 +14,48 @@ class FacturaElectronicaController extends Controller
   }
   
   
-  /*     public function index(){
+  public function index(){
     try {
-      $this->GenerarXML();
+      $this->facturasPendientes ();;
       $this->statusFile();
     }
     catch (Exception $e) {
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
-  } */
+  }
   
-  public function index()
-  {
-    $this->facturasPendientes ();
-    
-  }
-  public function GenerarXML () {
-    $this->facturasPendientes  () ;
-  }
+  
+  
   
   
   private function facturasPendientes ()    {
     $this->id_fact_elctrnca = 0 ;
     $FacturasPendientes     = $this->Factura->fact_01_enc();
     foreach ( $FacturasPendientes as $Factura ) {
-        $this->ENC    = $Factura;
-        //Llamada de todos los datos de la factura almacencados en los diferentes archivos
-        $this->consultaDatosFactura( $Factura['id_fact_elctrnca'] );
-        //Generación de los datos de la factura en cada uno de los archivos
-        $this->xmlInicioArchivo( $this->TipoDocumento, $Factura['_06_nro_fctra'] );
-        $this->ENC () ;
-        $this->EMI () ;
-        $this->ADQ () ;
-        $this->TOT () ;
-        $this->TIM () ;
-        $this->DSC () ;
-        $this->DRF () ;
-        $this->NOT () ;
-        $this->REF () ;
-        $this->MEP () ;
-        $this->CDN () ;
-        $this->ITE () ;
-        $this->xmlFinalArchivo();
-        $this->id_fact_elctrnca =  $Factura['id_fact_elctrnca'] ;
-         if ( $this->id_fact_elctrnca  > 0 )  {
-          $this->uploadFile          ();
-          $this->updateUploadFile    () ;
-        }  
-      } // Fin for each  
+      $this->ENC    = $Factura;
+      //Llamada de todos los datos de la factura almacencados en los diferentes archivos
+      $this->consultaDatosFactura( $Factura['id_fact_elctrnca'] );
+      //Generación de los datos de la factura en cada uno de los archivos
+      $this->xmlInicioArchivo( $this->TipoDocumento, $Factura['_06_nro_fctra'] );
+      $this->ENC () ;
+      $this->EMI () ;
+      $this->ADQ () ;
+      $this->TOT () ;
+      $this->TIM () ;
+      $this->DSC () ;
+      $this->DRF () ;
+      $this->NOT () ;
+      $this->REF () ;
+      $this->MEP () ;
+      $this->CDN () ;
+      $this->ITE () ;
+      $this->xmlFinalArchivo();
+      $this->id_fact_elctrnca =  $Factura['id_fact_elctrnca'] ;
+      if ( $this->id_fact_elctrnca  > 0 )  {
+        $this->uploadFile          ();
+        $this->updateUploadFile    () ;
+      }  
+    } // Fin for each  
   }
   
   
