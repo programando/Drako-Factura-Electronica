@@ -38,7 +38,7 @@ class FacturaElectronicaController extends Controller
           $this->id_fact_elctrnca = 0 ;
           Debug::Mostrar ("desde el nuevo index - facturasPendientes");
           $FacturasPendientes     = $this->Factura->fact_01_enc();
-          Debug::Mostrar ("desde el nuevo index - facturasPendientes II");
+          Debug::Mostrar ( $FacturasPendientes );
           /* foreach ( $FacturasPendientes as $Factura ) {
                $this->ENC    = $Factura;
                //Llamada de todos los datos de la factura almacencados en los diferentes archivos
