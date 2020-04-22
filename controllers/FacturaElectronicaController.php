@@ -24,10 +24,7 @@ class FacturaElectronicaController extends Controller
     }
   }
   
-  
-  
-  
-  
+
   private function facturasPendientes ()    {
     $this->id_fact_elctrnca = 0 ;
     $FacturasPendientes     = $this->Factura->fact_01_enc();
@@ -503,7 +500,7 @@ class FacturaElectronicaController extends Controller
     $stringXml = $this->xml->outputMemory(true);
     $this->xml->flush();
     unset(  $this->xml );
-    file_put_contents( $this->nombreDocumento  , $stringXml);
+    //file_put_contents( $this->nombreDocumento  , $stringXml);
   }
   
   
@@ -519,11 +516,15 @@ class FacturaElectronicaController extends Controller
     );
     
     $response = $cliente->__soapCall("FtechAction.uploadInvoiceFile", $params);
-    Debug::Mostrar ( $response );
+
     $this->uploadCode       = $response->code;
     $this->uploadError      = $this->textoError ( $response->error, 0 );
     $this->uploadSuccess    = $this->textoError( $response->success, 0);
     $this->idTransactionXml = $response->transaccionID ;
+
+    Debug::Mostrar( $response ) ;
+    Debug::Mostrar( $this->nombreDocumento );
+
   }
   
   public function statusFile ( ) {      
