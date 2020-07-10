@@ -6,7 +6,7 @@ class FacturaElectronicaController extends Controller
   var $xml, $TipoDocumento, $CadenaBase64, $idTransactionXml;
   var $statusCode, $statusError, $statusSuccess ;
   var $uploadCode, $uploadError, $uploadSuccess ;
-  var $nombreDocumento, $nomDocCreado ;
+  var $nombreDocumento, $nomDocCreado ,$Response;
   
   public function __construct() {
     parent::__construct();
@@ -16,7 +16,7 @@ class FacturaElectronicaController extends Controller
   
   public function index(){
     try {
-      $this->facturasPendientes ();;
+      $this->facturasPendientes ();
       $this->statusFile();
     }
     catch (Exception $e) {
@@ -66,6 +66,7 @@ class FacturaElectronicaController extends Controller
     $this->TOT = $this->Factura->fact_04_tot ( $this->id_fact_elctrnca );
     $this->DSC = $this->Factura->fact_06_dsc ( $this->id_fact_elctrnca );
     $this->IMP = $this->Factura->fact_05_imp ( $this->id_fact_elctrnca );
+
     $this->DRF = $this->Factura->fact_07_drf ( $this->id_fact_elctrnca );
     $this->ITE = $this->Factura->fact_12_ite ( $this->id_fact_elctrnca );
     $this->NOT = $this->Factura->fact_09_not ( $this->id_fact_elctrnca );
@@ -77,7 +78,7 @@ class FacturaElectronicaController extends Controller
     if ( !empty($this->DSC )) {
       $this->DSC = $this->DSC[0];
     }
-    $this->IMP = $this->IMP[0];
+    //$this->IMP = $this->IMP[0];
     $this->DRF = $this->DRF[0];
     if ( !empty($this->NOT )) {
       $this->NOT = $this->NOT[0];
@@ -283,13 +284,13 @@ class FacturaElectronicaController extends Controller
   
   private function TOT () {
     $this->xml->startElement('TOT');
-    $this->CrearSiExite('TOT_1',   $this->TOT['_01_sub_total']            );
+    $this->CrearSiExite('TOT_1',  $this->DosDecimales( $this->TOT['_01_sub_total']  )          );
     $this->CrearSiExite('TOT_2',   $this->TOT['_02_mnda']                 );
-    $this->CrearSiExite('TOT_3',   $this->TOT['_03_base_impsto']          );
+    $this->CrearSiExite('TOT_3',   $this->DosDecimales($this->TOT['_01_sub_total']  )        ); //
     $this->CrearSiExite('TOT_4',   $this->TOT['_04_mnda']                 );
-    $this->CrearSiExite('TOT_5',   $this->TOT['_05_tot_fctra']            );
+    $this->CrearSiExite('TOT_5',   $this->DosDecimales( $this->TOT['_05_tot_fctra']  )          );
     $this->CrearSiExite('TOT_6',   $this->TOT['_06_mnda']                 );
-    $this->CrearSiExite('TOT_7',   $this->TOT['_07_tot_fctra']            );
+    $this->CrearSiExite('TOT_7',   $this->DosDecimales( $this->TOT['_07_tot_fctra']    )        );
     $this->CrearSiExite('TOT_8',   $this->TOT['_08_mnda']                 );
     
     if ( $this->TOT['_09_dsctos'] > 0 ){
@@ -321,23 +322,25 @@ class FacturaElectronicaController extends Controller
     $this->xml->endElement();
   }
   private function TIM() {
-    $this->xml->startElement('TIM');
-    $this->CrearSiExite('TIM_1',   'false'          );
-    $this->CrearSiExite('TIM_2',   $this->IMP['imp_04_vr_impsto']           );
-    $this->CrearSiExite('TIM_3',   $this->IMP['imp_05_mnda']                );
+    $this->xml->startElement('TIM'); 
+      $this->CrearSiExite('TIM_1',   'false'          );
+      $this->CrearSiExite('TIM_2',  $this->DosDecimales( $this->IMP[0]['impuestototal']  )         );
+      $this->CrearSiExite('TIM_3',   $this->IMP[0]['imp_05_mnda']                );
     $this->IMP ();
     $this->xml->endElement();
   }
   
   private function IMP ()  {
-    $this->xml->startElement('IMP');
-    $this->CrearSiExite('IMP_1',   $this->IMP['imp_01_tp_impsto']           );
-    $this->CrearSiExite('IMP_2',   $this->IMP['imp_02_base']                );
-    $this->CrearSiExite('IMP_3',   $this->IMP['imp_03_mnda']                );
-    $this->CrearSiExite('IMP_4',   $this->IMP['imp_04_vr_impsto']           );
-    $this->CrearSiExite('IMP_5',   $this->IMP['imp_05_mnda']                );
-    $this->CrearSiExite('IMP_6',   $this->IMP['imp_06_pctje']               );
-    $this->xml->endElement();
+    foreach ( $this->IMP as $Impuestos ) {
+      $this->xml->startElement('IMP');
+      $this->CrearSiExite('IMP_1',   $Impuestos['imp_01_tp_impsto']           );
+      $this->CrearSiExite('IMP_2',  $this->DosDecimales( $Impuestos['imp_02_base']  )              );
+      $this->CrearSiExite('IMP_3',   $Impuestos['imp_03_mnda']                );
+      $this->CrearSiExite('IMP_4',  $this->DosDecimales( $Impuestos['imp_04_vr_impsto']  )         );
+      $this->CrearSiExite('IMP_5',   $Impuestos['imp_05_mnda']                );
+      $this->CrearSiExite('IMP_6',  $this->DosDecimales( $Impuestos['imp_06_pctje'] )              );
+      $this->xml->endElement();
+    }
   }
   
   
@@ -402,27 +405,27 @@ class FacturaElectronicaController extends Controller
   
   private function ITE () {
     foreach ( $this->ITE as $Producto) {
-      $Subtotal   = $Producto['_21_total_item'] ;
+      $Subtotal   =$this->DosDecimales( $Producto['_21_total_item'] );
       $Pctaje_Iva = $Producto['pctaje_iva'] ;
       $CodItem    = $Producto['_01_consecutivo'] ;
-      $Valor_Iva  = $Producto['valor_iva'] ;
+      $Valor_Iva  = $this->DosDecimales($Producto['valor_iva'] );
       $this->xml->startElement('ITE');
       $this->CrearSiExite('ITE_1',   $CodItem                      );
       $this->CrearSiExite('ITE_2',   $Producto['_02_tp_reg']                            );
-      $this->CrearSiExite('ITE_3',   $Producto['_03_cant']                              );
+      $this->CrearSiExite('ITE_3',   $this->DosDecimales($Producto['_03_cant']   )                           );
       $this->CrearSiExite('ITE_4',   $Producto['_04_und_med']                           );
-      $this->CrearSiExite('ITE_5',   $Producto['_05_csto_total']                        );
+      $this->CrearSiExite('ITE_5',   $this->DosDecimales($Producto['_05_csto_total'] )                       );
       $this->CrearSiExite('ITE_6',   $Producto['_06_mnda']                              );
-      $this->CrearSiExite('ITE_7',   $Producto['_07_vr_unit']                           );
+      $this->CrearSiExite('ITE_7',   $this->DosDecimales($Producto['_07_vr_unit'] )                          );
       $this->CrearSiExite('ITE_8',   $Producto['_08_mnda']                              );
       $this->CrearSiExite('ITE_11',  utf8_encode(  $Producto['_11_nom_prdcto'] )        );
       $this->CrearSiExite('ITE_12',   $Producto['_12_nom_prdcto']                       );
       $this->CrearSiExite('ITE_14',   $Producto['_14_und_med']                          );
-      $this->CrearSiExite('ITE_19',   $Producto['_19_total_item']                       );
+      $this->CrearSiExite('ITE_19',  $this->DosDecimales( $Producto['_19_total_item'] )                      );
       $this->CrearSiExite('ITE_20',   $Producto['_20_mnda']                             );
-      $this->CrearSiExite('ITE_21',   $Producto['_21_total_item']                       );
+      $this->CrearSiExite('ITE_21',   $this->DosDecimales($Producto['ITE_21'] )                              );
       $this->CrearSiExite('ITE_22',   $Producto['_22_mnda']                             );
-      $this->CrearSiExite('ITE_23',   $Producto['_21_total_item']                       );
+      $this->CrearSiExite('ITE_23',   $this->DosDecimales( $Producto['_21_total_item']    )                   );
       $this->CrearSiExite('ITE_27',   (int)$Producto['_27_cantidad']                    );
       $this->CrearSiExite('ITE_28',   $Producto['_28_unidad']                           );
       $this->IAE ( $CodItem ) ;
@@ -446,13 +449,13 @@ class FacturaElectronicaController extends Controller
     $this->CrearSiExite('TII_2',   'COP' ) ;
     $this->CrearSiExite('TII_3',   'false' ) ;
     $this->xml->startElement('IIM');
-    $this->CrearSiExite('IIM_1',   '01' ) ;
-    $this->CrearSiExite('IIM_2',   $Valor_Iva ) ;
-    $this->CrearSiExite('IIM_3',   'COP' ) ;
-    $this->CrearSiExite('IIM_4',   $Subtotal) ;
-    $this->CrearSiExite('IIM_5',   'COP' ) ;
-    $this->CrearSiExite('IIM_6',   $Pctaje_Iva ) ;
-    $this->xml->endElement();
+        $this->CrearSiExite('IIM_1',   '01' ) ;
+        $this->CrearSiExite('IIM_2',   $Valor_Iva ) ;
+        $this->CrearSiExite('IIM_3',   'COP' ) ;
+        $this->CrearSiExite('IIM_4',   $this->DosDecimales( $Subtotal)) ;
+        $this->CrearSiExite('IIM_5',   'COP' ) ;
+        $this->CrearSiExite('IIM_6',   $Pctaje_Iva ) ;
+      $this->xml->endElement();
     $this->xml->endElement();
   }
   
@@ -495,6 +498,7 @@ class FacturaElectronicaController extends Controller
   
   
   private function xmlFinalArchivo() {
+    //Debug::Mostrar ($this->nombreDocumento);
     $this->xml->endElement(); // Final del elemento factura
     $this->xml->endDocument();
     $stringXml = $this->xml->outputMemory(true);
@@ -521,10 +525,11 @@ class FacturaElectronicaController extends Controller
     $this->uploadError      = $this->textoError ( $response->error, 0 );
     $this->uploadSuccess    = $this->textoError( $response->success, 0);
     $this->idTransactionXml = $response->transaccionID ;
+    Debug::Mostrar ( $response  );
+    Debug::Mostrar ( $this->nombreDocumento);
 
-    Debug::Mostrar( $response ) ;
-    Debug::Mostrar( $this->nombreDocumento );
-
+    
+        
   }
   
   public function statusFile ( ) {      
@@ -564,6 +569,7 @@ class FacturaElectronicaController extends Controller
   }
   
   private function updateUploadFile () {
+
     $this->Factura->updateUploadFile ( $this->id_fact_elctrnca, $this->idTransactionXml, $this->uploadCode, $this->uploadError, $this->uploadSuccess ) ;
   }
   
@@ -577,6 +583,13 @@ class FacturaElectronicaController extends Controller
     $error      = utf8_decode ( $error ) ;
     return $error ;
   }
+
+
+  private function DosDecimales ( $Value ) {
+    return number_format((float)$Value, 2, '.', '');
+}
+
+
   // ====================== Final Documento ====================================
 }
 
