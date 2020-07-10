@@ -31,7 +31,8 @@
         }
 
         public function updateUploadFile ( $_id_fact_elctrnca, $idTransaction, $uploadCode, $uploadError, $uploadSuccess )   {
-           $Facturas  = $this->Db->Ejecutar_Sp("fact_01_enc_upload_update ( $_id_fact_elctrnca, '$idTransaction')");
+           $uploadError = utf8_decode( substr($uploadError,0,249));
+           $Facturas  = $this->Db->Ejecutar_Sp("fact_01_enc_upload_update ( $_id_fact_elctrnca, '$idTransaction','$uploadError','$uploadCode' )");
         }
 
 

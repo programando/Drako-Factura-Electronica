@@ -526,12 +526,13 @@ class FacturaElectronicaController extends Controller
     $this->uploadSuccess    = $this->textoError( $response->success, 0);
     $this->idTransactionXml = $response->transaccionID ;
     Debug::Mostrar ( $response  );
-    Debug::Mostrar ( $this->nombreDocumento);
-
-    
-        
+    Debug::Mostrar ( $this->nombreDocumento);   
   }
   
+  private function updateUploadFile () {
+    $this->Factura->updateUploadFile ( $this->id_fact_elctrnca, $this->idTransactionXml, $this->uploadCode, $this->uploadError, $this->uploadSuccess ) ;
+  }
+
   public function statusFile ( ) {      
     $cliente          = new SoapClient( FACT_ELEC_URL);
     $Documentos       = $this->Factura->checkDocumentsStatus();
@@ -568,10 +569,7 @@ class FacturaElectronicaController extends Controller
     file_put_contents($file, $pdf);
   }
   
-  private function updateUploadFile () {
 
-    $this->Factura->updateUploadFile ( $this->id_fact_elctrnca, $this->idTransactionXml, $this->uploadCode, $this->uploadError, $this->uploadSuccess ) ;
-  }
   
   private function textoError ( $error, $extraerDesde ) {
     if ( strlen(trim( $error)) <=31 ) {
