@@ -286,7 +286,7 @@ class FacturaElectronicaController extends Controller
     $this->xml->startElement('TOT');
     $this->CrearSiExite('TOT_1',  $this->DosDecimales( $this->TOT['_01_sub_total']  )          );
     $this->CrearSiExite('TOT_2',   $this->TOT['_02_mnda']                 );
-    $this->CrearSiExite('TOT_3',   $this->DosDecimales($this->TOT['_01_sub_total']  )        ); //
+    $this->CrearSiExite('TOT_3',   $this->DosDecimales($this->TOT['_03_base_impsto']  )        ); //
     $this->CrearSiExite('TOT_4',   $this->TOT['_04_mnda']                 );
     $this->CrearSiExite('TOT_5',   $this->DosDecimales( $this->TOT['_05_tot_fctra']  )          );
     $this->CrearSiExite('TOT_6',   $this->TOT['_06_mnda']                 );
