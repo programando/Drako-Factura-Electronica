@@ -426,7 +426,7 @@ class FacturaElectronicaController extends Controller
       $this->CrearSiExite('ITE_21',   $this->DosDecimales($Producto['ITE_21'] )                              );
       $this->CrearSiExite('ITE_22',   $Producto['_22_mnda']                             );
       $this->CrearSiExite('ITE_23',   $this->DosDecimales( $Producto['_21_total_item']    )                   );
-      $this->CrearSiExite('ITE_27',   (int)$Producto['_27_cantidad']                    );
+      $this->CrearSiExite('ITE_27',  $this->DosDecimales($Producto['_03_cant']   )                           );
       $this->CrearSiExite('ITE_28',   $Producto['_28_unidad']                           );
       $this->IAE ( $CodItem ) ;
       $this->TII ( $Subtotal, $Pctaje_Iva, $Valor_Iva) ;
