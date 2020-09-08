@@ -15,15 +15,15 @@ class FacturaElectronicaController extends Controller
   
   
   public function index(){
-/*     try {
+      try {
       $this->facturasPendientes ();
       $this->statusFile();
     }
     catch (Exception $e) {
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-    } */
+    }  
 
-    echo "Desde drako";
+     
   }
   
 
