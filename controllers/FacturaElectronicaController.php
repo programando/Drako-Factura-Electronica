@@ -15,13 +15,15 @@ class FacturaElectronicaController extends Controller
   
   
   public function index(){
-    try {
+/*     try {
       $this->facturasPendientes ();
       $this->statusFile();
     }
     catch (Exception $e) {
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-    }
+    } */
+
+    echo "Desde drako";
   }
   
 
@@ -431,7 +433,6 @@ class FacturaElectronicaController extends Controller
       $this->IAE ( $CodItem ) ;
       $this->TII ( $Subtotal, $Pctaje_Iva, $Valor_Iva) ;
       $this->xml->endElement();
-      
     }
   }
   
