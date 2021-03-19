@@ -14,7 +14,8 @@ class FacturaElectronicaController extends Controller
   }
   
   public function prueba(){
-      echo "Estamos desde drakos.plusoft.co" . date();
+      echo "Estamos desde drakos.plusoft.co" ;
+      echo date();
   }
 
   public function index(){
