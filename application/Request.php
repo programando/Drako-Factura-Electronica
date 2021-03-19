@@ -24,7 +24,7 @@ class Request
           }else{
              $this->url = $_GET['url'];
           }
-          Debug::Mostrar ($_GET);
+          Debug::Mostrar ( $HTTP_GET_VARS);
         $segmentos_url = explode('/',$this->url);
         $this->ResolveController( $segmentos_url );
         $this->ResolveMethod    ( $segmentos_url );
