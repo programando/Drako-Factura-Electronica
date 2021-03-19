@@ -24,7 +24,7 @@ class Request
           }else{
              $this->url = $_GET['url'];
           }
-          Debug::Mostrar ( $this->url);
+          Debug::Mostrar ( 'sddododo' );
         $segmentos_url = explode('/',$this->url);
         $this->ResolveController( $segmentos_url );
         $this->ResolveMethod    ( $segmentos_url );
