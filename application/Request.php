@@ -25,7 +25,7 @@ class Request
              $this->url = $_GET['url'];
           }
           $_GET['url'] = $_SERVER['REQUEST_URI'];
-        Debug::Mostrar ($_GET['url'] );
+        //Debug::Mostrar ($_GET['url'] );
         $segmentos_url = explode('/',$this->url);
         $this->ResolveController( $segmentos_url );
         $this->ResolveMethod    ( $segmentos_url );
