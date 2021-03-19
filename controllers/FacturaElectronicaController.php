@@ -13,7 +13,10 @@ class FacturaElectronicaController extends Controller
     $this->Factura = $this->Load_Model('FacturaElectronica');
   }
   
-  
+  public function prueba(){
+      echo "Estamos desde drakos.plusoft.co" . date();
+  }
+
   public function index(){
       try {
       $this->facturasPendientes ();
