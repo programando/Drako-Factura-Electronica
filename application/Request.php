@@ -27,6 +27,9 @@ class Request
         
  
         $segmentos_url = explode('/',$this->url);
+        $segmentos_url = array_diff($segmentos_url, array('')) ;
+        $segmentos_url = array_values( $segmentos_url );
+
         $this->ResolveController( $segmentos_url );
         $this->ResolveMethod    ( $segmentos_url );
         $this->ResolveParams    ( $segmentos_url );
