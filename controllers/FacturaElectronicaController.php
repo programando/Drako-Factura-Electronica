@@ -14,8 +14,9 @@ class FacturaElectronicaController extends Controller
   }
   
   public function prueba(){
-      return  "Estamos desde drakos.plusoft.co" ;
-       
+      Debug::Mostrar ("Estamos desde drakos.plusoft.co" . date()  );
+    
+
   }
 
   public function index(){
