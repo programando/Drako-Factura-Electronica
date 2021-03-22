@@ -17,14 +17,14 @@ class Request
 
     public function __construct(  )  {
 
-
+        $_GET['url'] = $_SERVER['REQUEST_URI'];
         if( !isset( $_GET['url'] ))    {
             $this->url  = "";
 
           }else{
              $this->url = $_GET['url'];
           }
-        //  $_GET['url'] = $_SERVER['REQUEST_URI'];
+        
  
         $segmentos_url = explode('/',$this->url);
         $this->ResolveController( $segmentos_url );
