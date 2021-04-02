@@ -514,9 +514,6 @@ class FacturaElectronicaController extends Controller
   
   private function uploadFile(){
     //Obtiene el path de su archivo
-    Debug::Mostrar ( FACT_ELEC_URL );
-    Debug::Mostrar ( FACT_ELEC_USU );
-    Debug::Mostrar ( FACT_ELEC_PASS );
     $xmlCarvajal = file_get_contents( $this->nombreDocumento );
     $xmlBase64   = base64_encode($xmlCarvajal);
     $cliente     = new SoapClient( FACT_ELEC_URL);
